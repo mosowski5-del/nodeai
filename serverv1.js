@@ -30,7 +30,7 @@ app.use(express.json()); // Enable JSON body parsing for requests
 app.post('/chat', async (req, res) => {
     try {
         console.log(req.body);
-        const { prompt } = req.body; // Expect a 'prompt' in the request body
+        const { prompt, model } = req.body; // Expect a 'prompt' in the request body
         const responseId = newrelic.getTraceMetadata().traceId;
         if (!prompt) {
             return res.status(400).json({ error: 'Prompt is required' });
@@ -42,7 +42,7 @@ app.post('/chat', async (req, res) => {
        //gpt-5-mini
        //gpt-3.5-turbo
         const completion = await openai.chat.completions.create({
-            model: "gpt-5-mini", // Or another desired model
+            model: model, // Or another desired model
             messages: [{ role: "user", content: prompt }],
         });
 
